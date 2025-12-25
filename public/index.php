@@ -4,11 +4,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Router\Router;
 use App\Controllers\ApiController;
+use App\Controllers\AuthController;
 
 // Set headers for JSON API
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Handle preflight requests
@@ -22,11 +23,7 @@ $router = new Router();
 
 // Define routes
 $router->get('/api/health', [ApiController::class, 'health']);
-$router->get('/api/users', [ApiController::class, 'getUsers']);
-$router->get('/api/users/{id}', [ApiController::class, 'getUser']);
-$router->post('/api/users', [ApiController::class, 'createUser']);
-$router->put('/api/users/{id}', [ApiController::class, 'updateUser']);
-$router->delete('/api/users/{id}', [ApiController::class, 'deleteUser']);
+$router->post('/api/login', [AuthController::class, 'login']);
 
 // Dispatch the request
 try {

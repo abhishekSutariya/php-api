@@ -9,9 +9,9 @@ return [
     ],
     'database' => [
         'host' => $_ENV['DB_HOST'] ?? 'localhost',
-        'port' => $_ENV['DB_PORT'] ?? 3306,
+        'port' => $_ENV['DB_PORT'] ?? 5432,
         'name' => $_ENV['DB_NAME'] ?? 'php_api',
-        'user' => $_ENV['DB_USER'] ?? 'root',
+        'user' => $_ENV['DB_USER'] ?? 'postgres',
         'password' => $_ENV['DB_PASSWORD'] ?? '',
     ],
     'api' => [
