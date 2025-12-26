@@ -254,3 +254,62 @@ curl http://localhost:8000/api/health
 curl -X POST http://localhost:8000/api/login -H "Content-Type: application/json" -d '{"userName":"alex","password":"admin"}'
 ```
 
+
+```
+Update Apache VirtualHost (MOST IMPORTANT)
+
+Apache decides which domain points to your API.
+
+Edit the vhost config
+sudo nano /etc/apache2/extra/php-api.conf
+
+Change this line:
+ServerName api.local
+
+To:
+ServerName liveserver.local
+
+
+💡 Nothing else in this file needs to change.
+
+Save & exit.
+
+2️⃣ Update /etc/hosts (Domain Resolution)
+
+macOS must know that liveserver.local points to your machine.
+
+sudo nano /etc/hosts
+
+Add (or replace):
+127.0.0.1 liveserver.local
+
+
+You can keep api.local too if you want both domains working:
+
+127.0.0.1 api.local
+127.0.0.1 liveserver.local
+
+
+Save & exit.
+
+3️⃣ Restart Apache
+sudo apachectl restart
+
+
+(Optional sanity check)
+
+sudo apachectl configtest
+
+
+Should say:
+
+Syntax OK
+
+4️⃣ Test the New Domain ✅
+curl -X POST http://liveserver.local/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"userName":"alex","password":"admin"}'
+
+
+🎉 Done.
+```
