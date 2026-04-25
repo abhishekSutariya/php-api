@@ -34,6 +34,11 @@ RUN printf '%s\n' \
     > /etc/apache2/conf-available/public-override.conf \
     && a2enconf public-override
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
+
+CMD ["docker-entrypoint.sh"]
