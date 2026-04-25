@@ -13,20 +13,26 @@ class Database
     {
         if (self::$connection === null) {
             $config = require __DIR__ . '/../../config/config.php';
-            $db = $config['database'];
+            $url = $config['database_url'] ?? getenv('DATABASE_URL') ?: '';
 
             try {
-                $dsn = sprintf(
-                    "pgsql:host=%s;port=%s;dbname=%s",
-                    $db['host'],
-                    $db['port'],
-                    $db['name']
-                );
+                if ($url === '') {
+                    throw new \Exception('DATABASE_URL is not configured.');
+                }
+
+                $db = parse_url($url);
+                if ($db === false || !isset($db['host'], $db['path'], $db['user'])) {
+                    throw new \Exception('DATABASE_URL format is invalid.');
+                }
+
+                $port = $db['port'] ?? 5432;
+                $password = $db['pass'] ?? '';
+                $dsn = "pgsql:host={$db['host']};port={$port};dbname=" . ltrim($db['path'], '/');
 
                 self::$connection = new PDO(
                     $dsn,
                     $db['user'],
-                    $db['password'],
+                    $password,
                     [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

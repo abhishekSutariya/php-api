@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: php-api
+    runtime: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+
+databases:
+  - name: php-postgres-db
+    plan: free
