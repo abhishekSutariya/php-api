@@ -22,6 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $router = new Router();
 
 // Define routes
+$router->get('/', function (): void {
+    echo json_encode([
+        'status' => 'API is running'
+    ]);
+});
 $router->get('/api/health', [ApiController::class, 'health']);
 $router->post('/api/login', [AuthController::class, 'login']);
 
